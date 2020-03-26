@@ -153,7 +153,7 @@ print(book3)
 ## Inheritance
 
 class Device:
-    def __init__(self, naem, connecteced_by):
+    def __init__(self, name, connecteced_by):
         self.name = name
         self.connecteced_by = connecteced_by
         self.connected = True
@@ -186,3 +186,118 @@ print(printer)
 
 printer.disconnect()
 printer.print(30)
+
+### Type hinting 
+
+from typing import List # , tuple, set, etc...
+
+def add1(x: int) -> int:
+    return x + 1
+
+class Example:
+
+    def __init__(self, name):
+        self.name = name
+
+    @classmethod
+    def example(cls) -> "Example":
+        return cls("Example")
+        
+
+### Import
+
+import sys
+
+print(f"mymodule.py: {__name__}")
+print(sys.path)
+
+### Function decorateor 
+
+## ---------------------- loses name fn
+# user = {"username": "jose", "access_level": "guess"}
+
+# def make_secure(func):
+#     def secure_function():
+#         if user["access_level"] == "admin":
+#             return func()
+#         else:
+#             return f"No admin permissions for {user['username']}."
+    
+#     return secure_function
+
+# @make_secure
+# def get_admin_password():
+#     return "1234"
+
+# print(get_admin_password())
+# print(get_admin_password.__name__)
+
+## ---------------------- decorator without parameter
+
+# import functools
+
+# user = {"username": "jose", "access_level": "guess"}
+
+# def make_secure(func): ## decorator 
+#     @functools.wraps(func)
+#     def secure_function(*args, **kwargs):
+#         if user["access_level"] == "admin":
+#             return func(*args, **kwargs)
+#         else:
+#             return f"No admin permissions for {user['username']}."
+    
+#     return secure_function
+
+# @make_secure
+# def get_password(panel):
+#     if panel == "admin":
+#         return "1234"
+#     elif panel == "billing":
+#         return "super_secure_password"
+
+# print(get_password("billing"))
+# print(get_password.__name__)
+
+## ---------------------- decorator with parameter
+
+import functools
+
+user = {"username": "jose", "access_level": "guess"}
+
+def make_secure(access_level):
+    def decorator(func): ## decorator 
+        @functools.wraps(func)
+        def secure_function(*args, **kwargs):
+            if user["access_level"] == "admin":
+                return func(*args, **kwargs)
+            else:
+                return f"No admin permissions for {user['username']}."
+        
+        return secure_function
+        
+    return decorator
+
+@make_secure("admin")
+def get_admin_password():
+    return "admin: 1234"
+
+@make_secure("admin")
+def get_dashboard_password():
+    return "user: user_password"
+
+print(get_admin_password())
+print(get_dashboard_password())
+
+user = {"username": "jose", "access_level": "admin"}
+
+print(get_admin_password())
+print(get_dashboard_password())
+
+### Mutability
+
+a = []
+b = a
+
+print(id(a))
+print(id(b))
+
